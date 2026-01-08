@@ -1,0 +1,12 @@
+local DISABLE_RECIPES = {
+    
+}
+
+local LOST_RECIPES = {
+    
+}
+
+return {
+    DISABLE_RECIPES = DISABLE_RECIPES,
+    LOST_RECIPES = LOST_RECIPES,
+}

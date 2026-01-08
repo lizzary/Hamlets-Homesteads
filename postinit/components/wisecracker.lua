@@ -1,0 +1,91 @@
+local AddComponentPostInit = AddComponentPostInit
+GLOBAL.setfenv(1, GLOBAL)
+
+local WiseCracker = require("components/wisecracker")
+
+----------------------------------------------------------------------------------------
+--Try to initialise all functions locally outside of the post-init so they exist in RAM only once
+----------------------------------------------------------------------------------------
+
+local function gasdamage(inst, data)
+    if not inst.last_in_gas_talk or GetTime() - inst.last_in_gas_talk > 5 then
+        inst.last_in_gas_talk = GetTime()
+        inst.components.talker:Say(GetString(inst, "ANNOUNCE_GAS_DAMAGE"))
+    end
+end
+
+local function OnNewDay(inst)
+    if TheWorld.components.pigtaxmanager and TheWorld.components.pigtaxmanager:HasPlayerCityHall() and TheWorld.components.pigtaxmanager:IsTaxDay() then
+        inst:DoTaskInTime(2, function()
+            inst.components.talker:Say(GetString(inst.prefab, "ANNOUNCE_TAXDAY"))
+        end)
+    end
+end
+
+local function canttrack(inst, data)
+    if not inst.last_cant_track_talk or GetTime() - inst.last_cant_track_talk > 4 then
+        inst.last_cant_track_talk = GetTime()
+        inst.components.talker:Say(GetString(inst, "ANNOUNCE_NOTHING_FOUND"))
+    end
+end
+
+local function track_close(inst, data)
+    inst.components.talker:Say(GetString(inst, "ANNOUNCE_TRACKER_FOUND"))
+end
+
+local function track_far(inst, data)
+    inst.components.talker:Say(GetString(inst, "ANNOUNCE_TRACKER_FAR"))
+end
+
+AddComponentPostInit("wisecracker", function(cmp)
+    cmp.inst:ListenForEvent("gasdamage", gasdamage)
+    cmp.inst:ListenForEvent("trackitem_far", track_far)
+    cmp.inst:ListenForEvent("trackitem_close", track_close)
+    cmp.inst:ListenForEvent("canttrackitem", canttrack)
+    cmp.inst:WatchWorldState("cycles", OnNewDay)
+
+    cmp.pl_enterlight_time = math.huge
+    cmp.pl_enterdark_time = math.huge
+end)
+
+local function GetTimeInDark(self)
+    return GetTime() - self.pl_enterdark_time
+end
+
+local function GetTimeInLight(self)
+    return GetTime() - self.pl_enterlight_time
+end
+
+local _OnUpdate = WiseCracker.OnUpdate
+function WiseCracker:OnUpdate(dt)
+    if not self.inst:HasTag("inside_interior") then
+        self.pl_enterdark_time = math.huge
+        self.pl_enterlight_time = math.huge
+        _OnUpdate(self, dt)
+        return
+    end
+
+    local night_vision = CanEntitySeeInDark(self.inst)
+    if night_vision or self.inst:IsInLight() then
+        if self.pl_enterlight_time == math.huge then
+            self.pl_enterlight_time = GetTime(self)
+            self.pl_enterdark_time = math.huge
+        end
+        if not self.inlight and (night_vision or GetTimeInLight(self) >= 0.5) then
+            self.inlight = true
+            if self.inst.components.talker ~= nil and not self.inst:HasTag("playerghost") then
+                self.inst.components.talker:Say(GetString(self.inst, "ANNOUNCE_ENTER_LIGHT"))
+            end
+        end
+    elseif self.inlight and GetTimeInDark(self) >= 0.5 then
+        self.inlight = false
+        if self.inst.components.talker ~= nil then
+            self.inst.components.talker:Say(GetString(self.inst, "ANNOUNCE_ENTER_DARK"))
+        end
+    else
+        if self.pl_enterdark_time == math.huge then
+            self.pl_enterdark_time = GetTime(self)
+            self.pl_enterlight_time = math.huge
+        end
+    end
+end

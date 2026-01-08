@@ -1,0 +1,12 @@
+--local AddComponentPostInit = AddComponentPostInit
+--GLOBAL.setfenv(1, GLOBAL)
+--
+--AddComponentPostInit("cookable",function(Cookable)
+--    local oldCook = Cookable.Cook
+--    function Cookable:Cook(cooker, chef)
+--        local prod = oldCook(self,cooker, chef)
+--
+--    end
+--
+--
+--end)
