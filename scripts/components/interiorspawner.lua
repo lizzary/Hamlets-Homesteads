@@ -16,8 +16,8 @@
 --                     **************************
 --
 
--- 亚丹：实际上，在上方注释版本的代码中，z的范围是(+BORDER + 2000,+infinite)
--- 亚丹：将z的坐标范围修改为(-1000,+infinite)，注意当z小于-2000时渲染会因为超出TheSim:UpdateRenderExtents而出现问题
+-- 实际上，在上方注释版本的代码中，z的范围是(+BORDER + 2000,+infinite)
+-- 将z的坐标范围修改为(-1000,+infinite)，注意当z小于-2000时渲染会因为超出TheSim:UpdateRenderExtents而出现问题
 
 local SPACE = 120
 local MAX_X_OFFSET = 2000
