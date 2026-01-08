@@ -24,7 +24,6 @@ PrefabFiles = {
     "prop_door", --门
     "rugs", --地毯
     "playerhouse_city", --住房系统的核心文件
-    "reconstruction_project", --还没注意看
     "deed", --房屋产权证书
     "house_door", --门
     "construction_permit", --扩建许可证
