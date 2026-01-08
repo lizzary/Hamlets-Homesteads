@@ -91,7 +91,6 @@ local function MakeReconstructionProject()
             return inst
         end
 
-        -- === 以下代码只在主模拟世界（服务端）执行 ===
         inst:AddComponent("constructionsite")
         inst.components.constructionsite:SetConstructionPrefab("construction_container")  -- 设置建筑容器
         inst.components.constructionsite:SetOnConstructedFn(onconstructed_scaffold)      -- 设置建造完成回调
