@@ -130,9 +130,15 @@ local function CanAcceptGem(inst, item, giver)
         return false
     end
 
-    -- 只接受红宝石和蓝宝石
-    return item.prefab == "redgem" and inst.components.roomsystem:GetHouseWarmingUpgradeStage(inst.interiorID) < 10 or
-            item.prefab == "bluegem" and inst.components.roomsystem:GetHouseCoolingUpgradeStage(inst.interiorID) < 10
+    if item.prefab == "redgem" and inst.components.roomsystem:GetHouseWarmingUpgradeStage(inst.interiorID) < 10 then
+        return true
+    end
+
+    if item.prefab == "bluegem" and inst.components.roomsystem:GetHouseCoolingUpgradeStage(inst.interiorID) < 10 then
+        return true
+    end
+
+    return false
 end
 
 local function OnAcceptGem(inst, giver, item)
