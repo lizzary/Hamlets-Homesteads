@@ -36,7 +36,7 @@ end
 function Roomsystem:GetHouseCoolingUpgradeStage(groupId)
     return (checkTableOrValue(self.house[groupId]["coolingUpgrade"]) or 0)
 end
---若同时有20颗红宝石+20颗蓝宝石升级后，室内温度则恒为25
+--若同时有10颗红宝石+10颗蓝宝石升级后，室内温度则恒为25
 
 function Roomsystem:WarmingUpgrade(groupId,level)
     self.house[groupId]["warmingUpgrade"] = (checkTableOrValue(self.house[groupId]["warmingUpgrade"]) or 0) + level
