@@ -82,6 +82,11 @@ return {
         USEDOOR = "Enter",
         USE_LIVING_ARTIFACT = "Use",
         WEIGHDOWN = "Weigh Down",
+        GIVE_GEM_FAIL_BURN = "give gem fail burn",
+        GIVE_GEM_FAIL_BUY = "give gem fail buy",
+        GIVE_RED_GEM_FAIL_LIMIT = "give red gem fail limit",
+        GIVE_BLUE_GEM_FAIL_LIMIT = "give blue gem fail limit",
+        GIVE_ITEM_FAIL = "give item fail"
     },
     ANT_TALK_ATTEMPT_TRADE = {
         "YOU WORK-K-K TOO?",

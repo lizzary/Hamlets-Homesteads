@@ -1,3 +1,4 @@
+-- 注：这个组件是全局的，因为挂在TheWrold下面了，请使用TheWorld.components.roomsystem来引用
 local function autoTable()
     return setmetatable({}, {
         __index = function(t, k)

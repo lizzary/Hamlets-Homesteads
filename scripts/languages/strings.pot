@@ -176,6 +176,31 @@ msgctxt "STRINGS.ACTIONS.WEIGHDOWN"
 msgid "Weigh Down"
 msgstr ""
 
+#. STRINGS.ACTIONS.GIVE_GEM_FAIL_BURN
+msgctxt "STRINGS.ACTIONS.GIVE_GEM_FAIL_BURN"
+msgid "give gem fail burn"
+msgstr ""
+
+#. STRINGS.ACTIONS.GIVE_GEM_FAIL_BUY
+msgctxt "STRINGS.ACTIONS.GIVE_GEM_FAIL_BUY"
+msgid "give gem fail buy"
+msgstr ""
+
+#. STRINGS.ACTIONS.GIVE_RED_GEM_FAIL_LIMIT
+msgctxt "STRINGS.ACTIONS.GIVE_RED_GEM_FAIL_LIMIT"
+msgid "give red gem fail limit"
+msgstr ""
+
+#. STRINGS.ACTIONS.GIVE_BLUE_GEM_FAIL_LIMIT
+msgctxt "STRINGS.ACTIONS.GIVE_BLUE_GEM_FAIL_LIMIT"
+msgid "give blue gem fail limit"
+msgstr ""
+
+#. STRINGS.ACTIONS.GIVE_ITEM_FAIL
+msgctxt "STRINGS.ACTIONS.GIVE_ITEM_FAIL"
+msgid "give item fail"
+msgstr ""
+
 #. STRINGS.ANT_TALK_ATTEMPT_TRADE.1
 msgctxt "STRINGS.ANT_TALK_ATTEMPT_TRADE.1"
 msgid "YOU WORK-K-K TOO?"

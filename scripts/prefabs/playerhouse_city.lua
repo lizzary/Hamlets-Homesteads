@@ -124,20 +124,31 @@ end
 
 local function CanAcceptGem(inst, item, giver)
     if inst:HasTag("burnt") then
+        giver.components.talker:Say(STRINGS.ACTIONS.GIVE_GEM_FAIL_BURN)
         return false
     end
     if not inst.bought then
+        giver.components.talker:Say(STRINGS.ACTIONS.GIVE_GEM_FAIL_BUY)
         return false
     end
 
-    if item.prefab == "redgem" and inst.components.roomsystem:GetHouseWarmingUpgradeStage(inst.interiorID) < 10 then
-        return true
+    if item.prefab == "redgem" then
+        if TheWorld.components.roomsystem:GetHouseWarmingUpgradeStage(inst.interiorID) < 10 then
+            return true
+        end
+        giver.components.talker:Say(STRINGS.ACTIONS.GIVE_RED_GEM_FAIL_LIMIT)
+        return false
     end
 
-    if item.prefab == "bluegem" and inst.components.roomsystem:GetHouseCoolingUpgradeStage(inst.interiorID) < 10 then
-        return true
+    if item.prefab == "bluegem" then
+        if TheWorld.components.roomsystem:GetHouseCoolingUpgradeStage(inst.interiorID) < 10 then
+            return true
+        end
+        giver.components.talker:Say(STRINGS.ACTIONS.GIVE_BLUE_GEM_FAIL_LIMIT)
+        return false
     end
 
+    giver.components.talker:Say(STRINGS.ACTIONS.GIVE_ITEM_FAIL)
     return false
 end
 
@@ -396,8 +407,6 @@ local function fn()
     inst.components.trader:SetAcceptTest(CanAcceptGem)
     inst.components.trader.onaccept = OnAcceptGem
     inst.components.trader.deleteitemonaccept = true  -- 接收后删除物品
-
-    inst:AddComponent("roomsystem")
 
     inst.BuyHouse = BuyHouse
     inst:ListenForEvent("deedbought", function() inst:BuyHouse() end, TheWorld)

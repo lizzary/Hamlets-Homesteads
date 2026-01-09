@@ -191,6 +191,31 @@ msgctxt "STRINGS.ACTIONS.WEIGHDOWN"
 msgid "Weigh Down"
 msgstr "压下去"
 
+#. STRINGS.ACTIONS.GIVE_GEM_FAIL_BURN
+msgctxt "STRINGS.ACTIONS.GIVE_GEM_FAIL_BURN"
+msgid "give gem fail burn"
+msgstr "这房子已经烧毁了，没法接受宝石。"
+
+#. STRINGS.ACTIONS.GIVE_GEM_FAIL_BUY
+msgctxt "STRINGS.ACTIONS.GIVE_GEM_FAIL_BUY"
+msgid "give gem fail buy"
+msgstr "这房子还没购买，不能安装宝石。"
+
+#. STRINGS.ACTIONS.GIVE_RED_GEM_FAIL_LIMIT
+msgctxt "STRINGS.ACTIONS.GIVE_RED_GEM_FAIL_LIMIT"
+msgid "give red gem fail limit"
+msgstr "这屋子已经足够温暖了。"
+
+#. STRINGS.ACTIONS.GIVE_BLUE_GEM_FAIL_LIMIT
+msgctxt "STRINGS.ACTIONS.GIVE_BLUE_GEM_FAIL_LIMIT"
+msgid "give blue gem fail limit"
+msgstr "这屋子已经足够凉爽了。"
+
+#. STRINGS.ACTIONS.GIVE_ITEM_FAIL
+msgctxt "STRINGS.ACTIONS.GIVE_ITEM_FAIL"
+msgid "give item fail"
+msgstr "能用宝石升级的小屋。"
+
 #. STRINGS.ANT_TALK_ATTEMPT_TRADE.1
 msgctxt "STRINGS.ANT_TALK_ATTEMPT_TRADE.1"
 msgid "YOU WORK-K-K TOO?"
