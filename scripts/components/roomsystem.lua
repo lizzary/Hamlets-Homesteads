@@ -43,11 +43,7 @@ function Roomsystem:WarmingUpgrade(groupId,level)
 end
 
 function Roomsystem:GetHouseWarmingUpgradeStage(groupId)
-    local stage = checkTableOrValue(self.house[groupId]["warmingUpgrade"])
-    if stage then
-        return stage
-    end
-    return -1
+    return (checkTableOrValue(self.house[groupId]["warmingUpgrade"]) or 0)
 end
 
 function Roomsystem:SetRoomType(interiorId,roomtype)
