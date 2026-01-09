@@ -15,12 +15,20 @@ local function roomsysHarvest(self,harvester)
             --有标签，直接换生成物
             if self.inst:HasTag("in_kitchen") then
                 loot = SpawnPrefab(self.product .. "_kitchen_buff")
+                --如果是一些不可食用或者合成表没的料理就返回原料理
+                if not loot then
+                    loot = SpawnPrefab(self.product)
+                end
 
             else--没标签，判断一下当前这个锅的位置，如果还是没标签，走正常逻辑，如果有标签，就添加标签，换生成物
                 local x, y, z = self.inst.Transform:GetWorldPosition()
                 local roomtype = TheWorld.components.roomsystem:GetRoomTypeByWorldPos(x, z)
                 if roomtype == "kitchen" then
                     loot = SpawnPrefab(self.product .. "_kitchen_buff")
+                    --如果是一些不可食用或者合成表没的料理就返回原料理
+                    if not loot then
+                        loot = SpawnPrefab(self.product)
+                    end
                     self.inst:AddTag("in_kitchen")
                 else
                     loot = SpawnPrefab(self.product)
