@@ -341,8 +341,8 @@ for _, recipe_name in ipairs(INTERIOR_ONLY_RECIPES) do
 end
 
 --- HOME ---
-CONSTRUCTION_PLANS["playerhouse_scaffold"] = { Ingredient("kelp", 1)}
-CONSTRUCTION_PLANS["playerhouse_reconstruction"] = { Ingredient("kelp", 2)}
+CONSTRUCTION_PLANS["playerhouse_scaffold"] = { Ingredient("cutstone", 10), Ingredient("boards", 20)}
+CONSTRUCTION_PLANS["playerhouse_reconstruction"] = { Ingredient("cutstone", 5), Ingredient("boards", 10)}
 
 AddRecipe2("playerhouse_scaffold",{Ingredient("cutstone", 5), Ingredient("boards", 5)},TECH.SCIENCE_ONE,{placer="playerhouse_city_placer",image = "playerhouse_city.tex", testfn = NotInInterior},{"STRUCTURES"})
 
