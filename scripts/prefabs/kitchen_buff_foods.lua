@@ -1383,7 +1383,7 @@ end
 --			计算出的料理带_kitchen_buff后缀
 --3. 如果这个锅是普通锅/便携锅，无论是否在厨房：
 --		计算出的料理不带_kitchen_buff后缀
---这是因为香料站在计算最终料理时就能确定当前这个产物是什么（依靠GenerateSpicedFoods里面的testfn），因此cooking.CalculateRecipe可以直接输出带后缀的prefab
+--这是因为香料站在计算最终料理时就必须要确定当前这个产物是什么（依靠GenerateSpicedFoods里面的testfn），因此cooking.CalculateRecipe可以直接输出带后缀的prefab
 --而锅在计算最终料理的环节无法确定当前产物要不要加后缀，只能后加
 --所以不要再问为什么不直接在料理合成表里加_kitchen_buff后缀了
 local function MakePreparedFoodWithBuff(data)
