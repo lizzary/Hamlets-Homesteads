@@ -1372,8 +1372,23 @@ local function OnLoad(inst, data)
         end
     end
 end
+--流程图：
+--0. 添加了料理合成表，testfn = 带有厨房加成后缀的料理+调料 -> 带有厨房加成和调料的料理，产出的料理prefab名自带_kitchen_buff后缀
+--							(不带厨房加成后缀的料理+调料 -> 带调料的料理，无后缀)
+--1. 打开锅点击“烹饪”后，cooking.CalculateRecipe(锅具类型,锅里的材料)计算最终料理
+--2. 如果这个锅是便携式香料站，无论是否在厨房：
+--		如果内容物是普通料理+调味料：
+--			计算出的料理不带_kitchen_buff后缀
+--		如果内容物是厨房加成料理+调味料
+--			计算出的料理带_kitchen_buff后缀
+--3. 如果这个锅是普通锅/便携锅，无论是否在厨房：
+--		计算出的料理不带_kitchen_buff后缀
+--这是因为香料站在计算最终料理时就能确定当前这个产物是什么（依靠GenerateSpicedFoods里面的testfn），因此cooking.CalculateRecipe可以直接输出带后缀的prefab
+--而锅在计算最终料理的环节无法确定当前产物要不要加后缀，只能后加
+--所以不要再问为什么不直接在料理合成表里加_kitchen_buff后缀了
 local function MakePreparedFoodWithBuff(data)
-    -- 保存原始名称用于获取字符串和资源
+    --GenerateSpicedFoods会把data.name变成带_xx调料后缀的名字，把原来的data.name变成data.basename
+	--如果data.basename不为空，那很有可能这个料理加了调料，而data.name这个名字是获取不到原料理的材质的
     local original_name = data.name
     local original_basename = data.basename or data.name
 
@@ -1381,9 +1396,6 @@ local function MakePreparedFoodWithBuff(data)
     data.name = original_name .. "_kitchen_buff"
 
 
-    --if data.basename then
-    --    data.basename = data.basename .. "_kitchen_buff"
-    --end
 
     local foodassets =
     {
@@ -1442,7 +1454,7 @@ local function MakePreparedFoodWithBuff(data)
 
             inst:AddTag("spicedfood")
 
-            inst.inv_image_bg = { image = original_name..".tex" }
+            inst.inv_image_bg = { image = original_basename..".tex" }
             inst.inv_image_bg.atlas = GetInventoryItemAtlas(inst.inv_image_bg.image)
 
             food_symbol_build = data.overridebuild or "cook_pot_food"
@@ -1558,19 +1570,96 @@ local function MakePreparedFoodWithBuff(data)
     return Prefab(data.name, fn, foodassets, foodprefabs)
 end
 
+--添加调料版的食谱
+require("tuning")
+local spicedfoods = {}
+local function oneaten_garlic(inst, eater)
+    eater:AddDebuff("buff_playerabsorption", "buff_playerabsorption")
+end
+local function oneaten_sugar(inst, eater)
+    eater:AddDebuff("buff_workeffectiveness", "buff_workeffectiveness")
+end
+local function oneaten_chili(inst, eater)
+    eater:AddDebuff("buff_attack", "buff_attack")
+end
+local SPICES =
+{
+    SPICE_GARLIC = { oneatenfn = oneaten_garlic, prefabs = { "buff_playerabsorption" } },
+    SPICE_SUGAR  = { oneatenfn = oneaten_sugar, prefabs = { "buff_workeffectiveness" } },
+    SPICE_CHILI  = { oneatenfn = oneaten_chili, prefabs = { "buff_attack" } },
+    SPICE_SALT   = {},
+}
+local function GenerateSpicedFoods(foods)
+    for foodname, fooddata in pairs(foods) do
+        for spicenameupper, spicedata in pairs(SPICES) do
+            local newdata = shallowcopy(fooddata)
+            local spicename = string.lower(spicenameupper)
+            if foodname == "wetgoop" then
+                newdata.test = function(cooker, names, tags) return names[spicename] end
+                newdata.priority = -10
+            else
+				--只有在有厨房加成buff的料理上加调味料才能获得带厨房加成、且带调味料的料理
+                newdata.test = function(cooker, names, tags) return (names[foodname .. "_kitchen_buff"]) and names[spicename] end
+                newdata.priority = 100
+            end
+            newdata.cooktime = .12
+            newdata.stacksize = nil
+            newdata.spice = spicenameupper
+            newdata.basename = foodname
+            newdata.name = foodname.."_"..spicename
+            newdata.floater = {"med", nil, {0.85, 0.7, 0.85}}
+			newdata.official = true
+			newdata.cookbook_category = fooddata.cookbook_category ~= nil and ("spiced_"..fooddata.cookbook_category) or nil
+            spicedfoods[newdata.name] = newdata
+
+            if spicename == "spice_chili" then
+                if newdata.temperature == nil then
+                    --Add permanent "heat" to regular food
+                    newdata.temperature = TUNING.HOT_FOOD_BONUS_TEMP
+                    newdata.temperatureduration = TUNING.FOOD_TEMP_LONG
+                    newdata.nochill = true
+                elseif newdata.temperature > 0 then
+                    --Upgarde "hot" food to permanent heat
+                    newdata.temperatureduration = math.max(newdata.temperatureduration, TUNING.FOOD_TEMP_LONG)
+                    newdata.nochill = true
+                end
+            end
+
+            if spicedata.prefabs ~= nil then
+                --make a copy (via ArrayUnion) if there are dependencies from the original food
+                newdata.prefabs = newdata.prefabs ~= nil and ArrayUnion(newdata.prefabs, spicedata.prefabs) or spicedata.prefabs
+            end
+
+            if spicedata.oneatenfn ~= nil then
+                if newdata.oneatenfn ~= nil then
+                    local oneatenfn_old = newdata.oneatenfn
+                    newdata.oneatenfn = function(inst, eater)
+                        spicedata.oneatenfn(inst, eater)
+                        oneatenfn_old(inst, eater)
+                    end
+                else
+                    newdata.oneatenfn = spicedata.oneatenfn
+                end
+            end
+        end
+    end
+end
+GenerateSpicedFoods(foods)
+
+
 local prefs = {}
 
+
 -- 生成带厨房加成后缀的料理
-for k, v in pairs(foods) do
-    table.insert(prefs, MakePreparedFoodWithBuff(v))
+for k, recipe in pairs(foods) do
+    table.insert(prefs, MakePreparedFoodWithBuff(recipe))
 end
 
-for k, v in pairs(foods) do
-    table.insert(prefs, MakePreparedFoodWithBuff(v))
+for k, recipe in pairs(spicedfoods) do
+    table.insert(prefs, MakePreparedFoodWithBuff(recipe))
+	AddCookerRecipe("portablespicer", recipe)
 end
 
-for k, v in pairs(foods) do
-    table.insert(prefs, MakePreparedFoodWithBuff(v))
-end
+
 
 return unpack(prefs)

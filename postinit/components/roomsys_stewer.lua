@@ -14,21 +14,22 @@ local function roomsysHarvest(self,harvester)
 
             --有标签，直接换生成物
             if self.inst:HasTag("in_kitchen") then
-                loot = SpawnPrefab(self.product .. "_kitchen_buff")
+                --便携香料站不与厨房系统互动，但是带有厨房加成的料理加香料能产出带有厨房加成和香料的料理，具体参考kitchen_buff_foods.lua
+                if self.inst:HasTag("spicer") then loot = SpawnPrefab(self.product) else loot = SpawnPrefab(self.product .. "_kitchen_buff") end
+
                 --如果是一些不可食用或者合成表没的料理就返回原料理
-                if not loot then
-                    loot = SpawnPrefab(self.product)
-                end
+                if not loot then loot = SpawnPrefab(self.product) end
 
             else--没标签，判断一下当前这个锅的位置，如果还是没标签，走正常逻辑，如果有标签，就添加标签，换生成物
                 local x, y, z = self.inst.Transform:GetWorldPosition()
                 local roomtype = TheWorld.components.roomsystem:GetRoomTypeByWorldPos(x, z)
+
                 if roomtype == "kitchen" then
-                    loot = SpawnPrefab(self.product .. "_kitchen_buff")
+                    --便携香料站不与厨房系统互动，但是带有厨房加成的料理加香料能产出带有厨房加成和香料的料理，具体参考kitchen_buff_foods.lua
+                    if self.inst:HasTag("spicer") then loot = SpawnPrefab(self.product) else loot = SpawnPrefab(self.product .. "_kitchen_buff") end
+
                     --如果是一些不可食用或者合成表没的料理就返回原料理
-                    if not loot then
-                        loot = SpawnPrefab(self.product)
-                    end
+                    if not loot then loot = SpawnPrefab(self.product) end
                     self.inst:AddTag("in_kitchen")
                 else
                     loot = SpawnPrefab(self.product)
@@ -83,7 +84,26 @@ local function roomsysHarvest(self,harvester)
         return true
     end
 end
-
+--local function dump(o, indent)
+--    indent = indent or 0
+--    local prefix = string.rep("  ", indent)
+--
+--    if type(o) ~= "table" then
+--        print(prefix .. tostring(o))
+--        return
+--    end
+--
+--    print(prefix .. "{")
+--    for k, v in pairs(o) do
+--        io.write(prefix .. "  [" .. tostring(k) .. "] = ")
+--        if type(v) == "table" then
+--            dump(v, indent + 1)
+--        else
+--            print(tostring(v))
+--        end
+--    end
+--    print(prefix .. "}")
+--end
 AddComponentPostInit("stewer",function(Stewer)
     function Stewer:Harvest(harvester)
         if self.inst:HasTag("in_kitchen") then
@@ -94,6 +114,7 @@ AddComponentPostInit("stewer",function(Stewer)
 
     local oldStartCooking = Stewer.StartCooking
     function Stewer:StartCooking(doer)
+
         --有标签，直接减cooktime
         if Stewer.inst:HasTag("in_kitchen") then
             local oldCalculateRecipe = cooking.CalculateRecipe
@@ -102,6 +123,7 @@ AddComponentPostInit("stewer",function(Stewer)
                 table.insert(ingredient_prefabs, v.prefab)
             end
             local product, cooktime = oldCalculateRecipe(Stewer.inst.prefab, ingredient_prefabs)
+            print("cal foods: ",product)
             --伪造一个Stewer:StartCooking里面的cooking.CalculateRecipe函数让他在oldStartCooking里面返回我想要的值
             cooking.CalculateRecipe = function(_, _)
                 return product, cooktime * 0.1
@@ -122,6 +144,7 @@ AddComponentPostInit("stewer",function(Stewer)
                     table.insert(ingredient_prefabs, v.prefab)
                 end
                 local product, cooktime = oldCalculateRecipe(Stewer.inst.prefab, ingredient_prefabs)
+                print("cal foods: ",product)
                 --伪造一个Stewer:StartCooking里面的cooking.CalculateRecipe函数让他在oldStartCooking里面返回我想要的值
                 cooking.CalculateRecipe = function(_, _)
                     return product, cooktime * 0.1
