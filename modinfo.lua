@@ -7,9 +7,9 @@ end
 
 name = "Hamlet‘s Homesteads - 哈姆雷特的温馨小屋"
 author = "不起风"
-description = "哈姆雷特的温馨小屋"
+description = "哈姆雷特的温馨小屋 v1.0.10 - 作者：不起风"
 
-version = "1.0.9"
+version = "1.0.10"
 forumthread = ""
 api_version = 10
 api_version_dst = 10
