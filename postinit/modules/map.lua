@@ -2,6 +2,7 @@
 GLOBAL.setfenv(1, GLOBAL)
 
 local worldtiledefs = require("worldtiledefs")
+require "components/map" --手动加载
 local TILE_SCALE = TILE_SCALE
 
 -- 保存原版实现

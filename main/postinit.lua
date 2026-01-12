@@ -121,16 +121,18 @@ local module_posts = {
     ["components/map"] = "map", --一些地块相关配置，最头疼的一集
 }
 
-local _require = require
----@param module_name string
-function require(module_name, ...)
-    local no_loaded = package.loaded[module_name] == nil
-    local ret = { _require(module_name, ...) }
-    if module_posts[module_name] and no_loaded then -- only load when first
-        modimport("postinit/modules/" .. module_posts[module_name])
-    end
-    return unpack(ret)
-end
+--local _require = require
+-----@param module_name string
+--function require(module_name, ...)
+--    local no_loaded = package.loaded[module_name] == nil
+--    local ret = { _require(module_name, ...) }
+--    if module_posts[module_name] and no_loaded then -- only load when first
+--        modimport("postinit/modules/" .. module_posts[module_name])
+--    end
+--    return unpack(ret)
+--end
+--改为手动加载
+modimport("postinit/modules/map")
 
 modimport("postinit/minimapentity") --与室内小地图有关，可能待简化
 modimport("postinit/entityscript") --很重要，其中有室内系统检测函数
