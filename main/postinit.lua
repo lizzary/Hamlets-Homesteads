@@ -142,7 +142,8 @@ modimport("postinit/vector3")
 modimport("postinit/emittermanager") --禁用室内雨雪效果
 modimport("postinit/sim")
 modimport("postinit/pathfinder")  --有室内寻路系统
-modimport("postinit/lightwatcher") --室内的光照系统 
+modimport("postinit/lightwatcher") --室内的光照系统
+modimport("postinit/othermods") --一些对其他mod的兼容
 
 for _, file_name in ipairs(behaviour_posts) do
     modimport("postinit/behaviours/" .. file_name)

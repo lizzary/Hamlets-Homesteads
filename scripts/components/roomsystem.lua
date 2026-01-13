@@ -19,7 +19,18 @@ end
 
 local Roomsystem = Class(function(self, inst)
     self.inst = inst
+    --累计到第5颗蓝宝石升级后，室内温度最低为69
+    --累计到第5颗红宝石升级后，室内温度最高为1
+    --若同时有10颗红宝石+10颗蓝宝石升级后，室内温度则恒为25
+    self.warming_stage1_level = 5
+    self.cooling_stage1_level = 5
+    self.warming_stage2_level = 10
+    self.warming_stage2_level = 10
 
+    self.WARMING_STAGE_1 = 1
+    self.COOLING_STAGE_1 = 1
+    self.WARMING_STAGE_2 = 2
+    self.COOLING_STAGE_2 = 2
 
     self.inst:AddTag("roomsystem")
 
@@ -27,24 +38,42 @@ local Roomsystem = Class(function(self, inst)
     self.room = autoTable()
 end)
 
---累计到第5颗蓝宝石升级后，室内温度最低为69
---宝石数量的逻辑在\postinit\components\interiortemperature.lua，其实把相关逻辑放进这里比较好
+
+--温控逻辑：\postinit\components\interiortemperature.lua
 function Roomsystem:CoolingUpgrade(groupId,level)
     self.house[groupId]["coolingUpgrade"] = (checkTableOrValue(self.house[groupId]["coolingUpgrade"]) or 0) + level
 end
 
---累计到第5颗红宝石升级后，室内温度最高为1
 function Roomsystem:GetHouseCoolingUpgradeStage(groupId)
-    return (checkTableOrValue(self.house[groupId]["coolingUpgrade"]) or 0)
+    if not groupId then
+        return 0
+    end
+    local coolingUpgrade = (checkTableOrValue(self.house[groupId]["coolingUpgrade"]) or 0)
+    if coolingUpgrade < 5 then
+        return 0
+    elseif coolingUpgrade < 10 then
+        return 1
+    else
+        return 2
+    end
 end
---若同时有10颗红宝石+10颗蓝宝石升级后，室内温度则恒为25
 
 function Roomsystem:WarmingUpgrade(groupId,level)
     self.house[groupId]["warmingUpgrade"] = (checkTableOrValue(self.house[groupId]["warmingUpgrade"]) or 0) + level
 end
 
 function Roomsystem:GetHouseWarmingUpgradeStage(groupId)
-    return (checkTableOrValue(self.house[groupId]["warmingUpgrade"]) or 0)
+    if not groupId then
+        return 0
+    end
+    local coolingUpgrade = (checkTableOrValue(self.house[groupId]["warmingUpgrade"]) or 0)
+    if coolingUpgrade < 5 then
+        return 0
+    elseif coolingUpgrade < 10 then
+        return 1
+    else
+        return 2
+    end
 end
 
 function Roomsystem:SetRoomType(interiorId,roomtype)

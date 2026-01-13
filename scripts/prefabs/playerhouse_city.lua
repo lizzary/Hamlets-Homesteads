@@ -132,8 +132,10 @@ local function CanAcceptGem(inst, item, giver)
         return false
     end
 
+    local WARMING_STAGE_2 = TheWorld.components.roomsystem.WARMING_STAGE_2
+    local COOLING_STAGE_2 = TheWorld.components.roomsystem.COOLING_STAGE_2
     if item.prefab == "redgem" then
-        if TheWorld.components.roomsystem:GetHouseWarmingUpgradeStage(inst.interiorID) < 10 then
+        if TheWorld.components.roomsystem:GetHouseWarmingUpgradeStage(inst.interiorID) < WARMING_STAGE_2 then
             return true
         end
         giver.components.talker:Say(STRINGS.ACTIONS.GIVE_RED_GEM_FAIL_LIMIT)
@@ -141,7 +143,7 @@ local function CanAcceptGem(inst, item, giver)
     end
 
     if item.prefab == "bluegem" then
-        if TheWorld.components.roomsystem:GetHouseCoolingUpgradeStage(inst.interiorID) < 10 then
+        if TheWorld.components.roomsystem:GetHouseCoolingUpgradeStage(inst.interiorID) < COOLING_STAGE_2 then
             return true
         end
         giver.components.talker:Say(STRINGS.ACTIONS.GIVE_BLUE_GEM_FAIL_LIMIT)
