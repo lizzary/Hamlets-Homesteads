@@ -112,7 +112,7 @@ local function SetUp(inst, data)
     wall_right.Transform:SetPosition(right_top_pos:Get())
     wall_right:SetTexture(inst.walltexture)
 
-    -- for _, v in ipairs {floor, wall_bg, wall_left, wall_right} do -- 亚丹：SetParent 并且本地位置不为 000 的话，有时会出现网络传输的问�?
+    -- for _, v in ipairs {floor, wall_bg, wall_left, wall_right} do -- SetParent 并且本地位置不为 000 的话，有时会出现网络传输的问�?
     --     v.entity:SetParent(inst.entity)
     -- end
 
