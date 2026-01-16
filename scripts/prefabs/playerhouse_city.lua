@@ -358,6 +358,7 @@ local function fn()
     inst:AddTag("playerhouse")
     inst:AddTag("renovatable")
     inst:AddTag("client_forward_action_target")
+    inst:AddTag("antlion_sinkhole_blocker") -- 阻止蚁狮沙坑生成
 
     inst.build = "pig_house_sale"
     inst.AnimState:SetBuild(inst.build)

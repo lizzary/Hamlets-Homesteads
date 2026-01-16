@@ -87,6 +87,8 @@ local function MakeReconstructionProject()
         inst.AnimState:SetBuild("pighouse_rubble")
         inst.AnimState:PlayAnimation("rubble")
 
+        inst:AddTag("antlion_sinkhole_blocker") -- 阻止蚁狮沙坑生成
+
         if not TheWorld.ismastersim then
             return inst
         end
