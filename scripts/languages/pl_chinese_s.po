@@ -229,7 +229,7 @@ msgstr "我看不到目的地。"
 #. STRINGS.ACTIONS.REVEAL_MAP_FAIL_IN_HOUSE
 msgctxt "STRINGS.ACTIONS.REVEAL_MAP_FAIL_IN_HOUSE"
 msgid "reveal map fail in house"
-msgstr "这里不好用。"
+msgstr "精美的地图。"
 
 #. STRINGS.ACTIONS.DEPLOY_DEED_NO_GEM
 msgctxt "STRINGS.ACTIONS.DEPLOY_DEED_NO_GEM"

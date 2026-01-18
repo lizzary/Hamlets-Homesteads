@@ -165,7 +165,7 @@ local function PreRevealCheck(inst, doer)
 
     local x,_,z = doer:GetPosition():Get()
     if TheWorld.components.interiorspawner:IsInInteriorRegion(x,z) then
-        doer.components.talker:Say(STRINGS.ACTIONS.REVEAL_MAP_FAIL_NO_HOUSE)
+        doer.components.talker:Say(STRINGS.ACTIONS.REVEAL_MAP_FAIL_IN_HOUSE)
     end
 
     doer.components.talker:Say(STRINGS.ACTIONS.REVEAL_MAP_FAIL_NO_HOUSE)
