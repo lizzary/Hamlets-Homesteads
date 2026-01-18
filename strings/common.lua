@@ -89,6 +89,7 @@ return {
         GIVE_ITEM_FAIL = "give item fail",
         REVEAL_MAP_FAIL = "reveal map fail",
         REVEAL_MAP_FAIL_NO_HOUSE = "reveal map fail no house",
+        REVEAL_MAP_FAIL_IN_HOUSE = "reveal map fail in house",
         DEPLOY_DEED_NO_GEM = "deploy deed no gem",
         DEPLOY_DEED_NO_HOUSE = "deploy deed no house",
         DEPLOY_DEED_CD = "deploy deed cd",
