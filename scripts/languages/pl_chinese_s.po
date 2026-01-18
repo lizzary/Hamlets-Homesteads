@@ -214,7 +214,42 @@ msgstr "这屋子已经足够凉爽了。"
 #. STRINGS.ACTIONS.GIVE_ITEM_FAIL
 msgctxt "STRINGS.ACTIONS.GIVE_ITEM_FAIL"
 msgid "give item fail"
-msgstr "能用宝石升级的小屋。"
+msgstr "这行不通，试试别的。"
+
+#. STRINGS.ACTIONS.REVEAL_MAP_FAIL
+msgctxt "STRINGS.ACTIONS.REVEAL_MAP_FAIL"
+msgid "reveal map fail"
+msgstr "这是一张空的证书。"
+
+#. STRINGS.ACTIONS.REVEAL_MAP_FAIL_NO_HOUSE
+msgctxt "STRINGS.ACTIONS.REVEAL_MAP_FAIL_NO_HOUSE"
+msgid "reveal map fail no house"
+msgstr "我看不到目的地。"
+
+#. STRINGS.ACTIONS.DEPLOY_DEED_NO_GEM
+msgctxt "STRINGS.ACTIONS.DEPLOY_DEED_NO_GEM"
+msgid "deploy deed no gem"
+msgstr "这魔法需要紫宝石的力量。"
+
+#. STRINGS.ACTIONS.DEPLOY_DEED_NO_HOUSE
+msgctxt "STRINGS.ACTIONS.DEPLOY_DEED_NO_HOUSE"
+msgid "deploy deed no house"
+msgstr "强大的契约魔法...被强行终止了。"
+
+#. STRINGS.ACTIONS.DEPLOY_DEED_CROSS_WORLD
+msgctxt "STRINGS.ACTIONS.DEPLOY_DEED_CROSS_WORLD"
+msgid "deploy deed cross world"
+msgstr "这太难了。"
+
+#. STRINGS.ACTIONS.DEPLOY_DEED_CD
+msgctxt "STRINGS.ACTIONS.DEPLOY_DEED_CD"
+msgid "deploy deed cd"
+msgstr "再等等..."
+
+#. STRINGS.ACTIONS.GIVE_DEED_FAIL_USED
+msgctxt "STRINGS.ACTIONS.GIVE_DEED_FAIL_USED"
+msgid "give deed fail used"
+msgstr "这上面已经写满暗影魔法了。"
 
 #. STRINGS.ANT_TALK_ATTEMPT_TRADE.1
 msgctxt "STRINGS.ANT_TALK_ATTEMPT_TRADE.1"
@@ -97998,10 +98033,15 @@ msgctxt "STRINGS.RECIPE_DESC.PLAYERHOUSE_CITY"
 msgid "Home Sweet Home."
 msgstr "甜蜜的家。"
 
-#. STRINGS.NAMES.PLAYERHOUSE_SCAFFOLD
+#. STRINGS.RECIPE_DESC.PLAYERHOUSE_SCAFFOLD
 msgctxt "STRINGS.RECIPE_DESC.PLAYERHOUSE_SCAFFOLD"
 msgid "Build a House Scaffold."
 msgstr "建造一个温馨的小屋。"
+
+#. STRINGS.RECIPE_DESC.DEED
+msgctxt "STRINGS.RECIPE_DESC.DEED"
+msgid "strong night magic."
+msgstr "精心装裱的...纸。"
 
 #. STRINGS.RECIPE_DESC.PLAYER_HOUSE_BRICK_CRAFT
 msgctxt "STRINGS.RECIPE_DESC.PLAYER_HOUSE_BRICK_CRAFT"

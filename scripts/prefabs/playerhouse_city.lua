@@ -1,7 +1,6 @@
 local GetPropDef = require("prefabs/interior_prop_defs")
 require "prefabutil"
 require "recipes"
-local roomsystem = require("components/roomsystem")
 
 local assets = {
     Asset("ANIM", "anim/pig_house_sale.zip"),
@@ -112,26 +111,46 @@ local function BuyHouse(inst)
     inst.AnimState:Hide("boards")
     inst.bought = true
     inst.components.door:SetDoorDisabled(false, "bought_state")
-
-    -- local x, y, z = inst.Transform:GetWorldPosition()
-    -- local ents = TheSim:FindEntities(x, y, z, 6)
-    -- for _, ent in ipairs(ents) do
-    --     if ent.components.citypossession and not ent:HasTag("pig") then
-    --         ent.components.citypossession:Disable()
-    --     end
-    -- end
 end
 
-local function CanAcceptGem(inst, item, giver)
+------------提供物品相关----------------------
+local function spawnDeed(inst)
+    local deed = SpawnPrefab("deed")
+    local x, y, z = inst.Transform:GetWorldPosition()
+    deed.components.bindinghouse:MarkPosition(x,y,z)
+    deed.components.bindinghouse:BindHouseById(inst.interiorID)
+    return deed
+end
+
+local function launchitem(inst,item,giver,angle)
+    local x, y, z = inst.Transform:GetWorldPosition()
+    y = 4.5
+    if not angle then
+        if giver ~= nil and giver:IsValid() then
+            angle = 180 - giver:GetAngleToPoint(x, 0, z)
+        else
+            local down = TheCamera:GetDownVec()
+            angle = math.atan2(down.z, down.x) / DEGREES
+            giver = nil
+        end
+    end
+    item.Transform:SetPosition(x, y, z)
+    local speed = math.random() * 4 + 2
+    angle = (angle + math.random() * 60 - 30) * DEGREES
+    item.Physics:SetVel(speed * math.cos(angle), math.random() * 2 + 8, speed * math.sin(angle))
+end
+
+local function CanAcceptItem(inst, item, giver)
     if inst:HasTag("burnt") then
-        giver.components.talker:Say(STRINGS.ACTIONS.GIVE_GEM_FAIL_BURN)
+        giver.components.talker:Say(STRINGS.ACTIONS.GIVE_ITEM_FAIL)
         return false
     end
     if not inst.bought then
-        giver.components.talker:Say(STRINGS.ACTIONS.GIVE_GEM_FAIL_BUY)
+        giver.components.talker:Say(STRINGS.ACTIONS.GIVE_ITEM_FAIL)
         return false
     end
 
+    --宝石相关
     local WARMING_STAGE_2 = TheWorld.components.roomsystem.WARMING_STAGE_2
     local COOLING_STAGE_2 = TheWorld.components.roomsystem.COOLING_STAGE_2
     if item.prefab == "redgem" then
@@ -150,16 +169,24 @@ local function CanAcceptGem(inst, item, giver)
         return false
     end
 
+    --房屋产权证书
+    if item.prefab == "deed" then
+        if item.components.bindinghouse:IsMarked() then
+            giver.components.talker:Say(STRINGS.ACTIONS.GIVE_DEED_FAIL_USED)
+            return false
+        end
+        return true
+    end
+
     giver.components.talker:Say(STRINGS.ACTIONS.GIVE_ITEM_FAIL)
     return false
 end
 
-local function OnAcceptGem(inst, giver, item)
+local function OnAcceptItem(inst, giver, item)
     --累计到第5颗蓝宝石升级后，室内温度最低为1,累计到第5颗红宝石升级后，室内温度最高为69
     --若同时有10颗红宝石+10颗蓝宝石升级后，室内温度则恒为25
     inst.SoundEmitter:PlaySound("dontstarve/common/telebase_gemplace")
     if item.prefab == "redgem" then
-        print("warm upgarde 1")
         TheWorld.components.roomsystem:WarmingUpgrade(inst.interiorID,1)
     end
 
@@ -167,7 +194,15 @@ local function OnAcceptGem(inst, giver, item)
         TheWorld.components.roomsystem:CoolingUpgrade(inst.interiorID,1)
     end
 
+    if item.prefab == "deed" then
+        local deed = spawnDeed(inst)
+        launchitem(inst,deed,giver)
+        deed:OnBinding()
+    end
+
 end
+-------------------------------------------------------
+
 local function OnReconstructe(inst)
     inst.SoundEmitter:PlaySound("dontstarve/common/pighouse_door")
     if inst.bought then
@@ -264,6 +299,7 @@ local function OnBurntUp(inst, data)
         inst.doortask:Cancel()
         inst.doortask = nil
     end
+    SpawnPrefab("collapse_big").Transform:SetPosition(inst.Transform:GetWorldPosition())
     inst:Remove()
 end
 
@@ -405,11 +441,9 @@ local function fn()
 
     inst:AddComponent("fixable")
 
-    --让房子可以接受物品
     inst:AddComponent("trader")
-    inst.components.trader:SetAcceptTest(CanAcceptGem)
-    inst.components.trader.onaccept = OnAcceptGem
-    inst.components.trader.deleteitemonaccept = true  -- 接收后删除物品
+    inst.components.trader:SetAcceptTest(CanAcceptItem)
+    inst.components.trader.onaccept = OnAcceptItem
 
     inst.BuyHouse = BuyHouse
     inst:ListenForEvent("deedbought", function() inst:BuyHouse() end, TheWorld)
@@ -437,7 +471,6 @@ local function fn()
 
     inst:ListenForEvent("usedoor", UseDoor)
 
-    --原mod对房屋拆除后的实现
     inst.OnReconstructe = OnReconstructe
 
     return inst

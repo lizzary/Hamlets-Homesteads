@@ -1120,6 +1120,11 @@ function InteriorSpawner:SpawnInterior(interior)
                     print("Failed to spawn `"..tostring(prefab.name).."`")
                 end
             else
+                if prefab.name == "deed" then --初始化产权证书
+                    object.components.bindinghouse:BindHouseById(interior.group_id)
+                    local exterior = self:GetExteriorById(interior.group_id)
+                    object.components.bindinghouse:MarkPosition(exterior:GetPosition():Get())
+                end
                 object.Transform:SetPosition(pt.x + prefab.x_offset, 0, pt.z + prefab.z_offset)
 
                 -- flips the art of the item. This must be manually saved on items it it's to persist over a save

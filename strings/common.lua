@@ -86,7 +86,14 @@ return {
         GIVE_GEM_FAIL_BUY = "give gem fail buy",
         GIVE_RED_GEM_FAIL_LIMIT = "give red gem fail limit",
         GIVE_BLUE_GEM_FAIL_LIMIT = "give blue gem fail limit",
-        GIVE_ITEM_FAIL = "give item fail"
+        GIVE_ITEM_FAIL = "give item fail",
+        REVEAL_MAP_FAIL = "reveal map fail",
+        REVEAL_MAP_FAIL_NO_HOUSE = "reveal map fail no house",
+        DEPLOY_DEED_NO_GEM = "deploy deed no gem",
+        DEPLOY_DEED_NO_HOUSE = "deploy deed no house",
+        DEPLOY_DEED_CD = "deploy deed cd",
+        DEPLOY_DEED_CROSS_WORLD = "deploy deed cross world",
+        GIVE_DEED_FAIL_USED = "give deed fail used",
     },
     ANT_TALK_ATTEMPT_TRADE = {
         "YOU WORK-K-K TOO?",
@@ -2537,6 +2544,7 @@ return {
         DECO_WALLORNAMENT_WREATH = "Not just for Christmas anymore.",
         DECO_WOOD = "Holds up nicely.",
         DECO_WOOD_CORNERBEAM = "Raise the roof on a budget.",
+        DEED = "strong night magic.",
         DEMOLITION_PERMIT = "Destroy that den you've always wanted.",
         DISARMING_KIT = "It's disarming.",
         DISGUISEHAT = "A fresh face.",

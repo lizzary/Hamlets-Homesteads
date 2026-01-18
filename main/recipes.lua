@@ -345,6 +345,8 @@ CONSTRUCTION_PLANS["playerhouse_scaffold"] = { Ingredient("cutstone", 10), Ingre
 CONSTRUCTION_PLANS["playerhouse_reconstruction"] = { Ingredient("cutstone", 5), Ingredient("boards", 10)}
 
 AddRecipe2("playerhouse_scaffold",{Ingredient("cutstone", 5), Ingredient("boards", 5)},TECH.SCIENCE_ONE,{placer="playerhouse_city_placer",image = "playerhouse_city.tex", testfn = NotInInterior},{"STRUCTURES"})
+AddRecipe2("deed",                {Ingredient("papyrus", 1), Ingredient("horrorfuel", 5),Ingredient("dreadstone", 3),Ingredient("thulecite", 2)},TECH.ANCIENT_FOUR,{nounlock=true})
+
 
 AddRecipe2("player_house_cottage_craft", {Ingredient("cutstone", 10),Ingredient("marble", 5)}, TECH.HOME, {nounlock = true}, {"HOME_MISC"})
 AddRecipe2("player_house_tudor_craft",   {Ingredient("boards", 10),Ingredient("cutstone", 3)}, TECH.HOME, {nounlock = true}, {"HOME_MISC"})

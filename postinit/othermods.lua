@@ -41,7 +41,7 @@ for i, mod in ipairs(ModManager.mods) do
             print("injection of Uncompromising-snowstormwatcher ok")
             local oldUpdateSnowstormWalkSpeed = Snowstormwatcher.UpdateSnowstormWalkSpeed --永不妥协在雪中行走时的移速更新函数，逐帧调用
             local oldSnowoverOnUpdate = nil
-            if Snowstormwatcher.inst.HUD and Snowstormwatcher.inst.HUD.snowover then
+            if Snowstormwatcher.inst.HUD ~= nil and Snowstormwatcher.inst.HUD.snowover ~= nil then
                 print("snowover found")
                 oldSnowoverOnUpdate = Snowstormwatcher.inst.HUD.snowover.OnUpdate --在雪中更新暴风雪滤镜时的更新函数，逐帧调用
             end
@@ -49,14 +49,16 @@ for i, mod in ipairs(ModManager.mods) do
             function Snowstormwatcher:UpdateSnowstormWalkSpeed(src, data)
                 local x, _, z = self.inst.Transform:GetWorldPosition()
                 if TheWorld.components.interiorspawner:IsInInteriorRegion(x, z) then
-                    if self.inst.HUD and self.inst.HUD.snowover then
+                    if self.inst.HUD ~= nil and self.inst.HUD.snowover ~= nil then
                         print("hiding snowover")
                         self.inst.HUD.snowover.OnUpdate = function(_) return end --把当前室内玩家的暴风雪滤镜整成一个空函数
                         self.inst.HUD.snowover:Hide()
                     end
                     return
                 end
-                self.inst.HUD.snowover.OnUpdate = oldSnowoverOnUpdate
+                if self.inst.HUD ~= nil and self.inst.HUD.snowover ~= nil then
+                   self.inst.HUD.snowover.OnUpdate = oldSnowoverOnUpdate
+                end
                 oldUpdateSnowstormWalkSpeed(self,src, data)
             end
 

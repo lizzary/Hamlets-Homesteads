@@ -36,6 +36,7 @@ PROP_DEFS.playerhouse_city = function(exterior_door_def)
 
         { name = "charcoal", x_offset = -3, z_offset = -2 },
         { name = "charcoal", x_offset =  2, z_offset =  3 },
+        { name = "deed",     x_offset =  0, z_offset =  0 },
 
         { name = "window_tall_curtain", x_offset = 0, z_offset = 15/2, rotation = 90, addtags={"playercrafted"} },
     }

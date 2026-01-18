@@ -14,9 +14,10 @@ local function onhammered_scaffold(inst,worker)
     end
 end
 
+--在fixable组件做的数据传递
 local function onconstructed_scaffold(inst)
     print("playerhouse_reconstruction construct")
-    if inst.reconstruction_prefab then
+    if inst.components.constructionsite:IsComplete() and inst.reconstruction_prefab then
         local reconstructed = SpawnPrefab(inst.reconstruction_prefab)
         print("onconstructed_scaffold: ",type(inst.reconstruction_prefab)," ",inst.reconstruction_prefab)
         reconstructed.Transform:SetPosition(inst.Transform:GetWorldPosition())
@@ -40,11 +41,10 @@ local function onconstructed_scaffold(inst)
         if reconstructed.OnReconstructe then
             reconstructed:OnReconstructe()
         end
-
+        inst:Remove()
+    else
+        inst.components.workable:SetWorkLeft(5)
     end
-    inst:Remove()
-
-
 end
 
 -- 添加保存函数
@@ -87,6 +87,7 @@ local function MakeReconstructionProject()
         inst.AnimState:SetBuild("pighouse_rubble")
         inst.AnimState:PlayAnimation("rubble")
 
+        inst:AddTag("playerhouse_reconstruction")
         inst:AddTag("antlion_sinkhole_blocker") -- 阻止蚁狮沙坑生成
 
         if not TheWorld.ismastersim then

@@ -201,6 +201,41 @@ msgctxt "STRINGS.ACTIONS.GIVE_ITEM_FAIL"
 msgid "give item fail"
 msgstr ""
 
+#. STRINGS.ACTIONS.REVEAL_MAP_FAIL
+msgctxt "STRINGS.ACTIONS.REVEAL_MAP_FAIL"
+msgid "reveal map fail"
+msgstr ""
+
+#. STRINGS.ACTIONS.REVEAL_MAP_FAIL_NO_HOUSE
+msgctxt "STRINGS.ACTIONS.REVEAL_MAP_FAIL_NO_HOUSE"
+msgid "reveal map fail no house"
+msgstr ""
+
+#. STRINGS.ACTIONS.DEPLOY_DEED_NO_GEM
+msgctxt "STRINGS.ACTIONS.DEPLOY_DEED_NO_GEM"
+msgid "deploy deed no gem"
+msgstr ""
+
+#. STRINGS.ACTIONS.DEPLOY_DEED_NO_HOUSE
+msgctxt "STRINGS.ACTIONS.DEPLOY_DEED_NO_HOUSE"
+msgid "deploy deed no house"
+msgstr ""
+
+#. STRINGS.ACTIONS.DEPLOY_DEED_CD
+msgctxt "STRINGS.ACTIONS.DEPLOY_DEED_CD"
+msgid "deploy deed cd"
+msgstr ""
+
+#. STRINGS.ACTIONS.DEPLOY_DEED_CROSS_WORLD
+msgctxt "STRINGS.ACTIONS.DEPLOY_DEED_CROSS_WORLD"
+msgid "deploy deed cross world"
+msgstr ""
+
+#. STRINGS.ACTIONS.GIVE_DEED_FAIL_USED
+msgctxt "STRINGS.ACTIONS.GIVE_DEED_FAIL_USED"
+msgid "give deed fail used"
+msgstr ""
+
 #. STRINGS.ANT_TALK_ATTEMPT_TRADE.1
 msgctxt "STRINGS.ANT_TALK_ATTEMPT_TRADE.1"
 msgid "YOU WORK-K-K TOO?"
