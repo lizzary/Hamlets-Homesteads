@@ -143,9 +143,11 @@ AddComponentPostInit("stewer",function(Stewer)
         end
         --老套路，整个假的SpawnPrefab给他然后再还原
         local oldSpawnPrefab = SpawnPrefab
-        local product = SpawnFood(Stewer)
-        local function fake_spawnprefab(_)  return product end
-        SpawnPrefab = fake_spawnprefab
+        if Stewer.done and Stewer.product ~= nil then --原版stewer组件在spawnprefab前的判断
+            local product = SpawnFood(Stewer)
+            local function fake_spawnprefab(_)  return product end
+            SpawnPrefab = fake_spawnprefab
+        end
         local result = oldHarvest(self,harvester)
         SpawnPrefab = oldSpawnPrefab
         return result

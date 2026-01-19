@@ -133,6 +133,15 @@ function FollowCamera:ZoomOut(step, ...)
     end
 end
 
+local _ZoomIn = FollowCamera.ZoomIn
+function FollowCamera:ZoomIn(step, ...)
+    if self.inside_interior then
+        return
+    else
+        return _ZoomIn(self, step, ...)
+    end
+end
+
 function ShakeAllCamerasInRoom(interiorID, mode, duration, speed, scale, source_or_point, max_distance)
     if not interiorID then
         return
