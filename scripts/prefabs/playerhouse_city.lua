@@ -314,8 +314,8 @@ local function OnSave(inst, data)
     data.prefabname = inst.prefabname
     data.minimapicon = inst.minimapicon
     data.build_by_player = inst.build_by_player
-    data.coolingUpgrade = TheWorld.components.roomsystem:GetHouseCoolingUpgradeStage(inst.interiorID)
-    data.warmingUpgrade = TheWorld.components.roomsystem:GetHouseWarmingUpgradeStage(inst.interiorID)
+    data.coolingUpgrade = TheWorld.components.roomsystem:GetCoolingUpgrade(inst.interiorID)
+    data.warmingUpgrade = TheWorld.components.roomsystem:GetWarmingUpgrade(inst.interiorID)
 end
 
 local function OnLoad(inst, data)

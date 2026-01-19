@@ -44,6 +44,10 @@ function Roomsystem:CoolingUpgrade(groupId,level)
     self.house[groupId]["coolingUpgrade"] = (checkTableOrValue(self.house[groupId]["coolingUpgrade"]) or 0) + level
 end
 
+function Roomsystem:GetCoolingUpgrade(groupId)
+    return (checkTableOrValue(self.house[groupId]["coolingUpgrade"]) or 0)
+end
+
 function Roomsystem:GetHouseCoolingUpgradeStage(groupId)
     if not groupId then
         return 0
@@ -60,6 +64,10 @@ end
 
 function Roomsystem:WarmingUpgrade(groupId,level)
     self.house[groupId]["warmingUpgrade"] = (checkTableOrValue(self.house[groupId]["warmingUpgrade"]) or 0) + level
+end
+
+function Roomsystem:GetWarmingUpgrade(groupId)
+    return (checkTableOrValue(self.house[groupId]["warmingUpgrade"]) or 0)
 end
 
 function Roomsystem:GetHouseWarmingUpgradeStage(groupId)
