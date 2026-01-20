@@ -103,37 +103,59 @@ local cooking = require("cooking")
 --    end
 --    print(prefix .. "}")
 --end
-local function SpawnFood(Stewer)
-    --Stewer.inst：有stewer组件的那个实例，比如烹饪锅
-    local loot
+--local function SpawnFood(Stewer)
+--    --Stewer.inst：有stewer组件的那个实例，比如烹饪锅
+--    local loot
+--
+--    --有厨房标签
+--    if Stewer.inst:HasTag("in_kitchen") then
+--        --便携香料站不与厨房系统互动，但是带有厨房加成的料理加香料能产出带有厨房加成和香料的料理，具体参考kitchen_buff_foods.lua
+--        if Stewer.inst:HasTag("spicer") then loot = SpawnPrefab(Stewer.product) else loot = SpawnPrefab(Stewer.product .. "_kitchen_buff") end
+--
+--        --如果是一些不可食用或者合成表没的料理就返回原料理
+--        if not loot then loot = SpawnPrefab(Stewer.product) end
+--
+--    else--没厨房标签，判断一下当前这个锅的位置，如果还是没标签，走正常逻辑，如果有标签，就添加标签，换生成物
+--
+--        local x, y, z = Stewer.inst.Transform:GetWorldPosition()
+--        local roomtype = TheWorld.components.roomsystem:GetRoomTypeByWorldPos(x, z)
+--
+--        if roomtype == "kitchen" then
+--            --便携香料站不与厨房系统互动，但是带有厨房加成的料理加香料能产出带有厨房加成和香料的料理，具体参考kitchen_buff_foods.lua
+--            if Stewer.inst:HasTag("spicer") then loot = SpawnPrefab(Stewer.product) else loot = SpawnPrefab(Stewer.product .. "_kitchen_buff") end
+--
+--            --如果是一些不可食用或者合成表没的料理就返回原料理
+--            if not loot then loot = SpawnPrefab(Stewer.product) end
+--            Stewer.inst:AddTag("in_kitchen")
+--        else
+--            loot = SpawnPrefab(Stewer.product)
+--        end
+--    end
+--
+--    return loot
+--end
 
+local function SetProduct(Stewer)
+    local kitchbuff_product = Stewer.product .. "_kitchen_buff"
     --有厨房标签
     if Stewer.inst:HasTag("in_kitchen") then
-        --便携香料站不与厨房系统互动，但是带有厨房加成的料理加香料能产出带有厨房加成和香料的料理，具体参考kitchen_buff_foods.lua
-        if Stewer.inst:HasTag("spicer") then loot = SpawnPrefab(Stewer.product) else loot = SpawnPrefab(Stewer.product .. "_kitchen_buff") end
-
-        --如果是一些不可食用或者合成表没的料理就返回原料理
-        if not loot then loot = SpawnPrefab(Stewer.product) end
-
-    else--没厨房标签，判断一下当前这个锅的位置，如果还是没标签，走正常逻辑，如果有标签，就添加标签，换生成物
-
+         --便携香料站不与厨房系统互动，但是带有厨房加成的料理加香料能产出带有厨房加成和香料的料理，具体参考kitchen_buff_foods.lua
+        if not Stewer.inst:HasTag("spicer") and PrefabExists(kitchbuff_product) then
+            Stewer.product = kitchbuff_product
+        end
+    else --没厨房标签，判断一下当前这个锅的位置，如果还是没标签，走正常逻辑，如果有标签，就添加标签，换生成物
         local x, y, z = Stewer.inst.Transform:GetWorldPosition()
         local roomtype = TheWorld.components.roomsystem:GetRoomTypeByWorldPos(x, z)
-
         if roomtype == "kitchen" then
-            --便携香料站不与厨房系统互动，但是带有厨房加成的料理加香料能产出带有厨房加成和香料的料理，具体参考kitchen_buff_foods.lua
-            if Stewer.inst:HasTag("spicer") then loot = SpawnPrefab(Stewer.product) else loot = SpawnPrefab(Stewer.product .. "_kitchen_buff") end
-
-            --如果是一些不可食用或者合成表没的料理就返回原料理
-            if not loot then loot = SpawnPrefab(Stewer.product) end
-            Stewer.inst:AddTag("in_kitchen")
-        else
-            loot = SpawnPrefab(Stewer.product)
+             --便携香料站不与厨房系统互动，但是带有厨房加成的料理加香料能产出带有厨房加成和香料的料理，具体参考kitchen_buff_foods.lua
+            if not Stewer.inst:HasTag("spicer") and PrefabExists(kitchbuff_product) then
+                Stewer.product = kitchbuff_product
+            end
         end
-    end
 
-    return loot
+    end
 end
+
 
 AddComponentPostInit("stewer",function(Stewer)
     local oldHarvest = Stewer.Harvest
@@ -141,17 +163,10 @@ AddComponentPostInit("stewer",function(Stewer)
         if self.inst:HasTag("in_kitchen") then
             print("this cookpot in kitchen !")
         end
-        --老套路，整个假的SpawnPrefab给他然后再还原
-        local oldSpawnPrefab = SpawnPrefab
-        if Stewer.done and Stewer.product ~= nil then --原版stewer组件在spawnprefab前的判断
-            local product = SpawnFood(Stewer)
-            local function fake_spawnprefab(_)  return product end
-            SpawnPrefab = fake_spawnprefab
-        end
+        SetProduct(Stewer)
         local result = oldHarvest(self,harvester)
-        SpawnPrefab = oldSpawnPrefab
         return result
-        end
+    end
 
     local oldStartCooking = Stewer.StartCooking
     function Stewer:StartCooking(doer)

@@ -108,17 +108,14 @@ function CraftingMenuWidget:GetPrototyperFilter()
     if self.owner.replica.builder then
         local tech_bonus = self.owner.replica.builder:GetTechBonuses() -- 获取科技加成
         if tech_bonus.HOME >= 2 then
-            print("tech_bonus.HOME >= 2")
             return self.prototyper_filters
         end
     end
-    print("GetPrototyperFilter return {}")
     return {}
 end
 
 --核心方法，根据过滤器数量和类型动态调整整个UI的布局
 function CraftingMenuWidget:UpdateFrame(force)
-    print("updateframe")
     -- 保存原始行数
     local _filter_grid_num_rows = self.filter_panel.filter_grid.num_rows
     local _prototyper_filter_grid_num_rows = self.filter_panel.prototyper_filter_grid.num_rows
@@ -127,10 +124,8 @@ function CraftingMenuWidget:UpdateFrame(force)
     local valid_prototyper_filters = self:GetPrototyperFilter()
     self.filter_panel.prototyper_filter_grid:RebuildLayout(self.grid_buttons_wide, self.grid_button_space, self.grid_button_space, valid_prototyper_filters)
     if #valid_prototyper_filters > 0 then
-        print("tech show")
         self.filter_panel.prototyper_filter_grid:Show()
     else
-        print("tech hide")
         self.filter_panel.prototyper_filter_grid:Hide()
     end
 
